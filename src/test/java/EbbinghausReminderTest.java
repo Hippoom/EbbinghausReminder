@@ -1,27 +1,18 @@
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 
-public class EbbinghausReminder {
+public class EbbinghausReminderTest {
 
-    private DateTime today;
-
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-    private List<Integer> daysBefore = asList(0, 1, 2, 4, 7, 15);
+    private EbbinghausReminder reminder;
 
     @Before
     public void givenToday() {
-        given(today(is("2014-04-01")));
+        givenToday(is("2014-04-01"));
     }
 
     @Test
@@ -54,31 +45,12 @@ public class EbbinghausReminder {
         assertThat(datesToBeReviewed(), hasItem("2014-03-17"));
     }
 
-    @Test
-    public void should_print_all_dates() {
-        for (String date: datesToBeReviewed()) {
-            System.out.println(date);
-        }
-    }
-
     private List<String> datesToBeReviewed() {
-        final List<String> dates = new ArrayList<>();
-        for (Integer days: this.daysBefore) {
-            dates.add(format(today.minusDays(days)));
-        }
-        return dates;
+        return reminder.datesToBeReviewed();
     }
 
-    private String format(DateTime dateTime) {
-        return dateTimeFormatter.print(dateTime);
-    }
-
-    private void given(DateTime value) {
-        this.today = value;
-    }
-
-    private DateTime today(String value) {
-        return dateTimeFormatter.parseDateTime(value);
+    private void givenToday(String value) {
+        this.reminder = new EbbinghausReminder(value);
     }
 
     private String is(String value) {
