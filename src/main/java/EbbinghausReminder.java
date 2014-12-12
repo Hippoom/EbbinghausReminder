@@ -1,9 +1,11 @@
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.util.Arrays.asList;
 
@@ -26,5 +28,12 @@ public class EbbinghausReminder {
 
     private String format(DateTime dateTime) {
         return dateTimeFormatter.print(dateTime);
+    }
+
+    public String randomDatesToBeReviewedAfter(String beginning) {
+        DateTime end = DateTime.now().minusDays(daysBefore.get(daysBefore.size() - 1));
+        Long days = new Duration(dateTimeFormatter.parseDateTime(beginning), end).getStandardDays();
+        int randomDay = new Random().nextInt(days.intValue());
+        return format(end.minusDays(randomDay));
     }
 }
