@@ -22,7 +22,7 @@ class EbbinghausReminder
   end
 
   def random_dates_to_be_reviewed_after start
-    [(fifteen_days_before - (fifteen_days_before - to_date(start))).to_str]
+    [(fifteen_days_before - Random.rand(1..fifteen_days_before - to_date(start))).to_str]
   end
 
   def fifteen_days_before
